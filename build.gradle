@@ -24,6 +24,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0-M1'
+    testImplementation 'io.cucumber:cucumber-java:7.14.1' 
+    testImplementation 'io.cucumber:cucumber-junit:7.14.1'
+
+
 }
 
 tasks.named('test') {
@@ -43,3 +47,13 @@ jacocoTestCoverageVerification {
 
 // Assure que la vérification de la couverture est exécutée après les tests
 check.dependsOn jacocoTestCoverageVerification
+
+tasks.register('acceptanceTest', Test) {
+    include '/acceptance/' // Inclure uniquement les tests d'acceptation
+    systemProperties System.getProperties() // Propager les propriétés système
+}
+
+// Exclure les tests d'acceptation de la tâche 'test' principale
+test {
+    exclude '/acceptance/'
+}
